@@ -12,6 +12,7 @@ public:
    bool add(const Event& newData);
    bool remove();
    Event peek() const;
+   bool Display() const;
 
 private:
    vector<Event> event_;

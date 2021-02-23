@@ -26,3 +26,9 @@ Event PrioQueue::peek() const
 {
     return storage.peek();
 }
+
+bool PrioQueue::Display() const
+{
+    storage.Display();
+    return true;
+}

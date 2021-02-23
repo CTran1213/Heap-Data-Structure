@@ -52,6 +52,8 @@ bool Simulation::generateCallers()
       Event e = Event("A", nextCallTime, avgServiceTime_, 0);
       events_.enqueue(e);
    }
+
+   return true;
 }
 
 bool Simulation::processEvent(Event call)
@@ -82,4 +84,5 @@ bool Simulation::processEvent(Event call)
    {
       
    }
+   return true;
 }

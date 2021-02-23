@@ -4,6 +4,8 @@ using namespace std;
 
 class Event
 {
+   friend ostream& operator<<(ostream &outStream, const Event &e);
+
 public:
    Event(string eventType, int time, int serviceTime, int extraTime);
    string getEventType() const;

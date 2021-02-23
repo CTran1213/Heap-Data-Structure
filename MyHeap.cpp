@@ -15,7 +15,13 @@ bool MyHeap::add(const Event& newData)
 
    newDataIndex = event_.size() - 1;
    inPlace = false;
-   while ((newDataIndex >= 0) and !inPlace)
+
+   if (newDataIndex == 0)
+   {
+      return true;
+   }
+   
+   while ((newDataIndex >= 0) and inPlace)
    {
       parentIndex = (newDataIndex - 1)/2;
       if (event_[newDataIndex] > event_[parentIndex])
@@ -46,18 +52,6 @@ Event MyHeap::peek() const
    return event_[0];
 }
 
-bool MyHeap::isLeaf(int nodeIndex) const
-{
-   if (getLeftChildIndex(nodeIndex) == -1 && getRightChildIndex(nodeIndex) == -1)
-   {
-      return true;
-   }
-   else
-   {
-      return false;
-   }
-}
-
 void MyHeap::heapRebuild(int subTreeRootIndex)
 {
    int leftChildIndex;
@@ -84,15 +78,27 @@ void MyHeap::heapRebuild(int subTreeRootIndex)
    }
 }
 
+bool MyHeap::isLeaf(int nodeIndex) const
+{
+   if (getLeftChildIndex(nodeIndex) == -1 && getRightChildIndex(nodeIndex) == -1)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
 int MyHeap::getLeftChildIndex(const int nodeIndex)const
 {
    if ((2*nodeIndex + 1) < event_.size())
    {
-      return -1;
+      return 2*nodeIndex + 1;
    }
    else
    {
-      return 2*nodeIndex + 1;
+      return -1;
    }
 }
 
@@ -100,11 +106,11 @@ int MyHeap::getRightChildIndex(const int nodeIndex)const
 {
    if ((2*nodeIndex + 2) < event_.size())
    {
-      return -1;
+      return 2*nodeIndex + 2;
    }
    else
    {
-      return 2*nodeIndex + 2;
+      return -1;
    }
 }
 
@@ -112,10 +118,19 @@ int MyHeap::getParentIndex(const int nodeIndex)const
 {
    if ((nodeIndex - 1)/2 > -1)
    {
-      return -1;
+      return (nodeIndex - 1)/2;
    }
    else
    {
-      return (nodeIndex - 1)/2;
+      return -1;
    }
+}
+
+bool MyHeap::Display() const
+{
+   for (int i = 0; i < event_.size(); i++)
+   {
+      cout<< event_[i] << " " << endl;
+   }
+   return true;
 }

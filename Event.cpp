@@ -53,3 +53,9 @@ bool Event::operator>(const Event &e1) const
       return false;
    }
 }
+
+ostream& operator<<(ostream &outStream, const Event &e)
+{
+   outStream << e.getTime();
+   return outStream;
+}

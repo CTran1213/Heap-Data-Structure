@@ -19,20 +19,18 @@ int main (int argc, char * const argv[]) {
       cerr << "ERROR: Too many or too little arguments" << endl;
    }
 	
-   default_random_engine generator;
-   int number;
-   vector<int> bots_;
-   uniform_int_distribution<int> uniform(1, 3600);
+   Event a = Event("A", 3, 3,0);
+   Event b= Event("A", 5, 3,0);
+   Event c = Event("A", 2, 6,0);
 
-   for (int i = 0; i < 10; i++)
-   {
-      number = uniform(generator);
-      bots_.push_back(number);
-   }
+   PrioQueue x;
+   x.enqueue(a);
+   x.enqueue(b);
+   x.enqueue(c);
 
-   for (int i = 0; i < 10; i++)
-   {
-      cout << bots_[i] << endl;
-   }
+   x.dequeue();
+   x.enqueue(a);
+   x.Display();
+
    return 0;
 }

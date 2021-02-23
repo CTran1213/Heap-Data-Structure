@@ -13,6 +13,7 @@ public:
    bool enqueue(const Event& newEntry);
    bool dequeue();
    Event peek() const;
+   bool Display() const;
 
 private:
    MyHeap storage;
