@@ -2,14 +2,54 @@
 
 Event::Event(string eventType, int time, int serviceTime, int extraTime)
 {
-
+   eventType_ = eventType;
+   time_ = time;
+   serviceLength_ = serviceTime;
+   extraTime_ = extraTime;
 
 }
 
 string Event::getEventType() const
 {
-   
+   return eventType_;
 }
-    int getTime() const;
-    int getServiceLength() const;
-    int getTotalServiceTime() const;
+
+int Event::getTime() const
+{
+   return time_;
+}
+
+int Event::getServiceLength() const
+{
+   return serviceLength_;
+}
+
+int Event::getTotalServiceTime() const
+{
+   int arrival = time_ - serviceLength_ - extraTime_;
+   return (time_ - arrival);
+}
+
+bool Event::operator<(const Event &e1) const
+{
+   if (time_ < e1.getTime())
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+bool Event::operator>(const Event &e1) const
+{
+   if (time_ > e1.getTime())
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}

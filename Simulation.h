@@ -3,6 +3,8 @@
 #include <random>
 #include <vector>
 #include <cmath>
+#include "PrioQueue.h"
+#include <queue>
 using namespace std;
 
 class Simulation
@@ -10,6 +12,7 @@ class Simulation
 public:
    Simulation(int takers, int avgCalls, int avgService, int numBots);
 
+   
    bool runSimulation();
 
 private:
@@ -17,5 +20,9 @@ private:
    int avgCallsPerSec_;
    int avgServiceTime_;
    int numBots_;
-   vector<int> bots_;
+   int currentTime_;
+   PrioQueue events_;
+   queue<Event> waitList_;
+   bool generateCallers();
+   bool processEvent(Event call);
 };
