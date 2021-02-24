@@ -24,6 +24,11 @@ int Event::getServiceLength() const
    return serviceLength_;
 }
 
+int Event::getExtraTime() const
+{
+   return extraTime_;
+}
+
 int Event::getTotalServiceTime() const
 {
    int arrival = time_ - serviceLength_ - extraTime_;

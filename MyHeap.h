@@ -11,6 +11,7 @@ public:
    
    bool add(const Event& newData);
    bool remove();
+   bool isEmpty() const;
    Event peek() const;
    bool Display() const;
 

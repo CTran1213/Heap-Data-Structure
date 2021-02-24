@@ -18,11 +18,15 @@ public:
 private:
    int callTakers_;
    int avgCallsPerSec_;
-   int avgServiceTime_;
+   int avgServiceRate_;
    int numBots_;
-   int currentTime_;
+   int items_;
+   int previousCallTime_ ;
+   double averageTotalServiceTime_;
    PrioQueue events_;
    queue<Event> waitList_;
    bool generateCallers();
-   bool processEvent(Event call);
+   bool processEvent(Event& call);
+   bool arrivalTime(Event& call, bool wait);
+   bool departTime(Event& call);
 };

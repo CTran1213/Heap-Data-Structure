@@ -43,8 +43,23 @@ bool MyHeap::remove()
 {
    event_[0] = event_[event_.size() - 1];
    event_.pop_back();
-   heapRebuild(0);
+   if (!event_.empty())
+   {
+      heapRebuild(0);
+   }
+   
    return true;
+}
+
+bool MyHeap::isEmpty() const
+{
+   if (event_.empty())
+   {
+      return true;
+   }
+   else{
+      return false;
+   }
 }
 
 Event MyHeap::peek() const

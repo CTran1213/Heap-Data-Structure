@@ -9,7 +9,7 @@ class PrioQueue
 {
 public:
    PrioQueue();
-   bool isEmpty();
+   bool isEmpty() const;
    bool enqueue(const Event& newEntry);
    bool dequeue();
    Event peek() const;

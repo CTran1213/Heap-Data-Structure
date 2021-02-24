@@ -5,9 +5,15 @@ PrioQueue::PrioQueue()
 
 }
 
-bool PrioQueue::isEmpty()
+bool PrioQueue::isEmpty() const
 {
-    return true;
+    if (storage.isEmpty())
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 bool PrioQueue::enqueue(const Event &newEntry)

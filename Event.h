@@ -11,6 +11,7 @@ public:
    string getEventType() const;
    int getTime() const;
    int getServiceLength() const;
+   int getExtraTime() const;
    int getTotalServiceTime() const;
    bool operator<(const Event &e1) const;
    bool operator>(const Event &e1) const;
