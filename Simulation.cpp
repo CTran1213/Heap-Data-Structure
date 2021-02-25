@@ -1,9 +1,9 @@
 #include "Simulation.h"
 
-Simulation::Simulation(int takers, int avgCalls, int avgService, int numBots)
+Simulation::Simulation(int takers, double avgCalls, double avgService, int numBots)
 {
    callTakers_ = takers;
-   avgCallsPerSec_ = avgCalls / 3600;
+   avgCallsPerSec_ = avgCalls / 3600.0;
    avgServiceRate_ = 1/avgService;
    numBots_ = numBots;
 }
@@ -13,6 +13,7 @@ Simulation::Simulation(int takers, int avgCalls, int avgService, int numBots)
 bool Simulation::runSimulation()
 {
    generateCallers();
+   
    // Event a = Event("A", 1, 3,0);
    // Event b= Event("A", 2, 3,0);
    // Event c = Event("A", 3, 3,0);
@@ -40,51 +41,65 @@ bool Simulation::generateCallers()
    int number;
    default_random_engine generator;
    uniform_int_distribution<int> uniform(1, 3600);
-
+   cout << "test1" << endl;
    for (int i = 0; i < numBots_; i++)
    {
       number = uniform(generator);
       Event e = Event("B", number, 6, 0);
       events_.enqueue(e);
    }
-
+   
    //Exponential Distribution to find the average time a real call takes
+   double avgTime;
    default_random_engine gen2;                    
    exponential_distribution<double> expDist1(avgServiceRate_);
 
-   int avgTime = int(ceil(expDist1(gen2)));
-   cout << avgTime << endl;
-   // //Exponential Distribution to create real callers
-   // int theInterval;
-   // int nextCallTime = 0;
-   // default_random_engine gen;
-   // exponential_distribution<double> expDist2(avgCallsPerSec_);
+   avgTime = (ceil(expDist1(gen2)));
+   while (avgTime > 3600)
+   {
+      avgTime = (ceil(expDist1(gen2)));
+   }
+   
+   //Exponential Distribution to create real callers
+   double theInterval;
+   double nextCallTime = 0;
+   double previousCallTime = 0;
+   default_random_engine gen;
+   exponential_distribution<double> expDist2(avgCallsPerSec_);
 
-   // Event first = Event("A", 0, avgTime, 0);
-   // events_.enqueue(first);
-   // items_++;
-   // theInterval = int(ceil(expDist2(gen)));
-   // while (nextCallTime <= 3600)
-   // {
-   //    nextCallTime = nextCallTime + theInterval;
-   //    Event e = Event("A", nextCallTime, avgTime, 0);
-   //    items_++;
-   //    events_.enqueue(e);
-   // }
+   Event first = Event("A", 0, avgTime, 0);
+   events_.enqueue(first);
+   items_++;
+   
+   while (nextCallTime <= 3600)
+   {
+      theInterval = (ceil(expDist2(gen)));
+      avgTime = (ceil(expDist1(gen2)));
+      while (avgTime > 3600)
+      {
+         avgTime = (ceil(expDist1(gen2)));
+      }
+      nextCallTime = previousCallTime + theInterval;
+      previousCallTime = nextCallTime;
+      Event e = Event("A", nextCallTime, avgTime, 0);
+      items_++;
+      events_.enqueue(e);
+   }
+
    return true;
 }
 
 bool Simulation::processEvent(Event& call)
 {
-   if ((call.getEventType().compare("A") == 0 || call.getEventType().compare("B") == 0) && callTakers_ != 0)
+   if ((call.getEventType().compare("A") == 0 || call.getEventType().compare("B") == 0) && callTakers_ != 0) //call taker available and caller is real or a bot
    {
       arrivalTime(call, false);
    }
-   else if ((call.getEventType().compare("A") == 0 || call.getEventType().compare("B") == 0) && callTakers_ == 0)
+   else if ((call.getEventType().compare("A") == 0 || call.getEventType().compare("B") == 0) && callTakers_ == 0) //call taker is not available and caller is real or a bot
    {
       waitList_.push(call);
    }
-   else if (call.getEventType().compare("DB") == 0 || call.getEventType().compare("D") == 0)
+   else if (call.getEventType().compare("DB") == 0 || call.getEventType().compare("D") == 0) //service ended event/ departure event
    {
       departTime(call);
       previousCallTime_ = call.getTime();
@@ -100,10 +115,11 @@ bool Simulation::processEvent(Event& call)
 
 bool Simulation::arrivalTime(Event& call, bool wait)
 {
-   int departTime;
-   int extraTime;
+   double departTime;
+   double extraTime;
    callTakers_--;
 
+   //Extra time is added if a caller was in the wait list
    if (wait)
    {
       extraTime = previousCallTime_ - call.getTime();
@@ -115,12 +131,12 @@ bool Simulation::arrivalTime(Event& call, bool wait)
 
    departTime = call.getTime() + call.getServiceLength() + extraTime;
 
-   if (call.getEventType().compare("A") == 0)
+   if (call.getEventType().compare("A") == 0) //departure time/service ended event for a legit caller
    {
       Event e = Event("D", departTime, call.getServiceLength(), extraTime);
       events_.enqueue(e);
    }
-   else
+   else  //departure time/service ended event for a bot caller
    {
       Event e = Event("DB", departTime, call.getServiceLength(), extraTime);
       events_.enqueue(e);
@@ -128,6 +144,7 @@ bool Simulation::arrivalTime(Event& call, bool wait)
    return true;
 }
 
+//Calculates how long a call took if it was a legit call
 bool Simulation::departTime(Event& call)
 {
    callTakers_++;

@@ -10,18 +10,18 @@ using namespace std;
 class Simulation
 {
 public:
-   Simulation(int takers, int avgCalls, int avgService, int numBots);
+   Simulation(int takers, double avgCalls, double avgService, int numBots);
 
    
    bool runSimulation();
 
 private:
    int callTakers_;
-   int avgCallsPerSec_;
-   int avgServiceRate_;
+   double avgCallsPerSec_;
+   double avgServiceRate_;
    int numBots_;
    int items_;
-   int previousCallTime_ ;
+   double previousCallTime_ ;
    double averageTotalServiceTime_;
    PrioQueue events_;
    queue<Event> waitList_;

@@ -21,7 +21,7 @@ bool MyHeap::add(const Event& newData)
       return true;
    }
    
-   while ((newDataIndex >= 0) and inPlace)
+   while ((newDataIndex > 0) && !inPlace)
    {
       parentIndex = (newDataIndex - 1)/2;
       if (event_[newDataIndex] > event_[parentIndex])
@@ -33,7 +33,7 @@ bool MyHeap::add(const Event& newData)
          Event temp = event_[parentIndex];
          event_[parentIndex] = event_[newDataIndex];
          event_[newDataIndex] = temp;
-         newDataIndex = parentIndex;
+         newDataIndex = parentIndex; 
       }
    }
    return true;

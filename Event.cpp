@@ -1,6 +1,6 @@
 #include "Event.h"
 
-Event::Event(string eventType, int time, int serviceTime, int extraTime)
+Event::Event(string eventType, double time, double serviceTime, double extraTime)
 {
    eventType_ = eventType;
    time_ = time;
@@ -14,24 +14,24 @@ string Event::getEventType() const
    return eventType_;
 }
 
-int Event::getTime() const
+double Event::getTime() const
 {
    return time_;
 }
 
-int Event::getServiceLength() const
+double Event::getServiceLength() const
 {
    return serviceLength_;
 }
 
-int Event::getExtraTime() const
+double Event::getExtraTime() const
 {
    return extraTime_;
 }
 
-int Event::getTotalServiceTime() const
+double Event::getTotalServiceTime() const
 {
-   int arrival = time_ - serviceLength_ - extraTime_;
+   double arrival = time_ - serviceLength_ - extraTime_;
    return (time_ - arrival);
 }
 
