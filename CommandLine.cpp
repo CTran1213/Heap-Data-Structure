@@ -39,6 +39,10 @@ int main (int argc, char * const argv[]) {
       double avgCalls = stoi(argv[2]);
       double avgService = stoi(argv[3]);
       int numBots = stoi(argv[4]);
+      if (takers <= 0 || avgCalls <= 0 || avgService <= 0 || numBots < 0)
+      {
+         cerr << "ERROR: Your input is incorrect. You entered negative numbers" << endl;
+      }
       Simulation s = Simulation(takers, avgCalls, avgService, numBots);
       s.runSimulation();
    }
